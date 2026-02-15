@@ -6,85 +6,56 @@
     <title>Dungeon Crawler Game</title>
     <style>
         body { font-family: Arial, sans-serif; }
-        #game { width: 800px; height: 600px; border: 1px solid #000; position: relative; }
-        .player, .enemy { width: 40px; height: 40px; position: absolute; }
-        .player { background-color: blue; }
-        .enemy { background-color: red; }
+        #game { margin: 20px; }
     </style>
 </head>
 <body>
-    <h1>Dungeon Crawler Game</h1>
-    <div id="game"></div>
-    <script>
-        const gameArea = document.getElementById('game');
-        let player = { x: 0, y: 0, level: 1, health: 100, skills: {} };
-        let enemies = [];
+    <div id="game">
+        <h1>Dungeon Crawler</h1>
+        <p>Welcome to the dungeon crawler game!</p>
+        <div id="dungeon"></div>
+        <script>
+            // Game variables
+            const dungeonSize = 10;
+            const player = { level: 1, skills: [], powerUps: [] };
+            const enemies = [];
 
-        function generateDungeon() {
-            // Placeholder: Logic for generating a dungeon layout
-            console.log('Dungeon generated');
-        }
-
-        function createEnemy() {
-            const enemy = { x: Math.random() * 760, y: Math.random() * 560, health: 50 };
-            enemies.push(enemy);
-            drawEnemy(enemy);
-        }
-
-        function drawEnemy(enemy) {
-            const enemyDiv = document.createElement('div');
-            enemyDiv.classList.add('enemy');
-            enemyDiv.style.left = `${enemy.x}px`;
-            enemyDiv.style.top = `${enemy.y}px`;
-            gameArea.appendChild(enemyDiv);
-        }
-
-        function movePlayer(dx, dy) {
-            player.x = Math.min(Math.max(0, player.x + dx), 760);
-            player.y = Math.min(Math.max(0, player.y + dy), 560);
-            drawPlayer();
-        }
-
-        function drawPlayer() {
-            const playerDiv = document.createElement('div');
-            playerDiv.classList.add('player');
-            playerDiv.style.left = `${player.x}px`;
-            playerDiv.style.top = `${player.y}px`;
-            gameArea.appendChild(playerDiv);
-        }
-
-        function enemyAI() {
-            enemies.forEach(enemy => {
-                // Example AI logic: move towards player
-                if (enemy.x < player.x) enemy.x += 1;
-                if (enemy.x > player.x) enemy.x -= 1;
-                if (enemy.y < player.y) enemy.y += 1;
-                if (enemy.y > player.y) enemy.y -= 1;
-                drawEnemy(enemy);
-            });
-        }
-
-        function playerAttack() {
-            enemies.forEach(enemy => {
-                if (Math.abs(player.x - enemy.x) < 40 && Math.abs(player.y - enemy.y) < 40) {
-                    enemy.health -= 10;
-                    if (enemy.health <= 0) {
-                        enemies = enemies.filter(e => e !== enemy);
+            // Function to generate a dungeon
+            function generateDungeon(size) {
+                const dungeon = [];
+                for (let i = 0; i < size; i++) {
+                    dungeon[i] = [];
+                    for (let j = 0; j < size; j++) {
+                        dungeon[i][j] = Math.random() > 0.7 ? 'E' : '.'; // 'E' for enemy, '.' for empty
                     }
                 }
-            });
-        }
+                return dungeon;
+            }
 
-        // Game loop
-        function gameLoop() {
-            enemyAI();
-            requestAnimationFrame(gameLoop);
-        }
+            // Function to render the dungeon
+            function renderDungeon(dungeon) {
+                const dungeonDiv = document.getElementById('dungeon');
+                dungeonDiv.innerHTML = '';
+                dungeon.forEach(row => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.innerText = row.join(' ');
+                    dungeonDiv.appendChild(rowDiv);
+                });
+            }
 
-        generateDungeon();
-        createEnemy();
-        drawPlayer();
-        gameLoop();
-    </script>
+            // Function to simulate enemy AI
+            function enemyAI() {
+                // Flanking and chasing behavior logic here
+            }
+
+            // Initialize the game
+            function initGame() {
+                const dungeon = generateDungeon(dungeonSize);
+                renderDungeon(dungeon);
+            }
+
+            window.onload = initGame;
+        </script>
+    </div>
 </body>
 </html>
