@@ -5,57 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeon Crawler Game</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        #game { margin: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        #game {
+            border: 1px solid #444;
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
-    <div id="game">
-        <h1>Dungeon Crawler</h1>
-        <p>Welcome to the dungeon crawler game!</p>
-        <div id="dungeon"></div>
-        <script>
-            // Game variables
-            const dungeonSize = 10;
-            const player = { level: 1, skills: [], powerUps: [] };
-            const enemies = [];
+    <h1>Dungeon Crawler Game</h1>
+    <div id="game"></div>
+    <script>
+        class DungeonCrawlingGame {
+            constructor() {
+                this.player = { level: 1, xp: 0, skills: [], powerUps: [] };
+                this.enemies = [];
+                this.dungeon = [];
+                this.generateDungeon();
+                this.spawnEnemies();
+                this.startGame();
+            }
 
-            // Function to generate a dungeon
-            function generateDungeon(size) {
-                const dungeon = [];
-                for (let i = 0; i < size; i++) {
-                    dungeon[i] = [];
-                    for (let j = 0; j < size; j++) {
-                        dungeon[i][j] = Math.random() > 0.7 ? 'E' : '.'; // 'E' for enemy, '.' for empty
+            generateDungeon() {
+                // Simple dungeon generation logic
+                for (let i = 0; i < 10; i++) {
+                    this.dungeon.push([]);
+                    for (let j = 0; j < 10; j++) {
+                        this.dungeon[i].push(Math.random() < 0.2 ? 'wall' : 'floor');
                     }
                 }
-                return dungeon;
             }
 
-            // Function to render the dungeon
-            function renderDungeon(dungeon) {
-                const dungeonDiv = document.getElementById('dungeon');
-                dungeonDiv.innerHTML = '';
-                dungeon.forEach(row => {
-                    const rowDiv = document.createElement('div');
-                    rowDiv.innerText = row.join(' ');
-                    dungeonDiv.appendChild(rowDiv);
-                });
+            spawnEnemies() {
+                // Spawning enemies logic
+                for (let i = 0; i < 5; i++) {
+                    this.enemies.push({ id: i, type: 'goblin', health: 50, position: [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)] });
+                }
             }
 
-            // Function to simulate enemy AI
-            function enemyAI() {
-                // Flanking and chasing behavior logic here
+            startGame() {
+                // Game loop logic
+                console.log('Game started!');
             }
 
-            // Initialize the game
-            function initGame() {
-                const dungeon = generateDungeon(dungeonSize);
-                renderDungeon(dungeon);
+            playerTurn() {
+                // Player turn actions
             }
 
-            window.onload = initGame;
-        </script>
-    </div>
+            enemyTurn() {
+                // Enemy AI with flanking and tactical movement
+            }
+
+            battle() {
+                // Turn-based combat logic
+            }
+        }
+
+        const game = new DungeonCrawlingGame();
+    </script>
 </body>
 </html>
